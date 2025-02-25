@@ -32,6 +32,7 @@ jobs:
          
          BASE=$(echo $LATEST | grep -Po '(?<=:)\d+\.\d+(?=\.)')
          RELEASE=$(echo $LATEST | grep -Po '\d+(?=-\d+-x86_64)')
+         BUILD=$(echo $LATEST | grep -Po '\d+(?=-x86_64)')
 
          # Download file to temporary location
          TEMP_FILE=$(mktemp)
@@ -46,6 +47,7 @@ jobs:
          echo "ENCODED_LATEST: $ENCODED_LATEST"
          echo "BASE: $BASE"
          echo "RELEASE: $RELEASE"
+         echo "BUILD: $BUILD"
          echo "HASH: $HASH"
 
          # Create new versions.json content
@@ -53,6 +55,7 @@ jobs:
          {
            "base": "$BASE",
            "release": "$RELEASE",
+           "build": "$BUILD",
            "hash": "sha256-$HASH"
          }
          EOF
