@@ -28,7 +28,7 @@ jobs:
 
          # Get latest version and properly encode the URL
          BASE_URL="https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/"
-         LATEST=$(curl -s BASE_URL | grep -Po 'proton-cachyos-1:\d+\.\d+\.\d+-\d+-x86_64.*\.pkg\.tar\.zst' | sort -V | tail -n1)
+         LATEST=$(curl -s "$BASE_URL" | grep -Po 'proton-cachyos-1:\d+\.\d+\.\d+-\d+-x86_64.*\.pkg\.tar\.zst' | sort -V | tail -n1)
          ENCODED_LATEST=${LATEST//:/%3A}
          URL="${BASE_URL}${ENCODED_LATEST}"
          BASE=$(echo $LATEST | grep -Po '(?<=:)\d+\.\d+(?=\.)')
@@ -77,7 +77,6 @@ jobs:
        if: env.UPDATE_NEEDED == 'true'
        uses: peter-evans/create-pull-request@v5
        with:
-         token: ${{ secrets.PAT }}
          commit-message: 'proton-cachyos: update to latest version'
          title: 'Update proton-cachyos'
          body: |
