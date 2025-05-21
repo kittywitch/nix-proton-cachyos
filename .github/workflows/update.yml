@@ -27,7 +27,7 @@ jobs:
          OLD_CONTENT=$(cat versions.json)
 
          # Get latest version and properly encode the URL
-         LATEST=$(curl -s 'https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/' | grep -Po 'proton-cachyos-1:\d+\.\d+\.\d+-\d+-x86_64_v3\.pkg\.tar\.zst' | sort -V | tail -n1)
+         LATEST=$(curl -s 'https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/' | grep -Po 'proton-cachyos-1:\d+\.\d+\.\d+-\d+-x86_64.*\.pkg\.tar\.zst' | sort -V | tail -n1)
          ENCODED_LATEST=${LATEST//:/%3A}
          
          BASE=$(echo $LATEST | grep -Po '(?<=:)\d+\.\d+(?=\.)')
