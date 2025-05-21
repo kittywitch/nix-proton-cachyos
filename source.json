@@ -1,6 +1,7 @@
 {
-  "base": "9.0",
-  "release": "20250426",
+  "base": "10.0",
+  "release": "20250515",
   "build": "1",
-  "hash": "sha256-Oc7TMaUUEZN/CKqLpHMd0tWDBEL+AqDn9lepzCDoT4o="
+  "url": "https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/proton-cachyos-1%3A10.0.20250515-1-x86_64.pkg.tar.zst",
+  "hash": "sha256-JLRQlglN098wfkDwUM3jp+34pN6MlNaQj+WcLwTvqC0="
 }
