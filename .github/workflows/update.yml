@@ -24,19 +24,20 @@ jobs:
        id: check
        run: |
          # Store current version info
-         OLD_CONTENT=$(cat versions.json)
+         OLD_CONTENT=$(cat source.json)
 
          # Get latest version and properly encode the URL
-         LATEST=$(curl -s 'https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/' | grep -Po 'proton-cachyos-1:\d+\.\d+\.\d+-\d+-x86_64.*\.pkg\.tar\.zst' | sort -V | tail -n1)
+         BASE_URL="https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/"
+         LATEST=$(curl -s BASE_URL | grep -Po 'proton-cachyos-1:\d+\.\d+\.\d+-\d+-x86_64.*\.pkg\.tar\.zst' | sort -V | tail -n1)
          ENCODED_LATEST=${LATEST//:/%3A}
-         
+         URL="${BASE_URL}${ENCODED_LATEST}"
          BASE=$(echo $LATEST | grep -Po '(?<=:)\d+\.\d+(?=\.)')
          RELEASE=$(echo $LATEST | grep -Po '\d+(?=-\d+-x86_64)')
          BUILD=$(echo $LATEST | grep -Po '\d+(?=-x86_64)')
 
          # Download file to temporary location
          TEMP_FILE=$(mktemp)
-         curl -L "https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/${ENCODED_LATEST}" -o "$TEMP_FILE"
+         curl -L "$URL" -o "$TEMP_FILE"
 
          # Get hash of the downloaded file
          HASH=$(nix hash file --base64 --type sha256 "$TEMP_FILE")
@@ -45,17 +46,19 @@ jobs:
          # Debug Variables
          echo "LATEST: $LATEST"
          echo "ENCODED_LATEST: $ENCODED_LATEST"
+         echo "URL: $URL"
          echo "BASE: $BASE"
          echo "RELEASE: $RELEASE"
          echo "BUILD: $BUILD"
          echo "HASH: $HASH"
 
-         # Create new versions.json content
+         # Create new source.json content
          NEW_CONTENT=$(cat <<EOF
          {
            "base": "$BASE",
            "release": "$RELEASE",
            "build": "$BUILD",
+           "url": "$URL",
            "hash": "sha256-$HASH"
          }
          EOF
@@ -66,7 +69,7 @@ jobs:
            echo "No updates available"
            echo "UPDATE_NEEDED=false" >> $GITHUB_ENV
          else
-           echo "$NEW_CONTENT" > versions.json
+           echo "$NEW_CONTENT" > source.json
            echo "UPDATE_NEEDED=true" >> $GITHUB_ENV
          fi
 

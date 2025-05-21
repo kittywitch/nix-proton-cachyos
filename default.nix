@@ -2,16 +2,15 @@
 , stdenv
 , fetchurl
 , zstd
-, protonCachyosVersions
+, source
 }:
 
 stdenv.mkDerivation {
   name = "proton-cachyos";
-  version = "${protonCachyosVersions.base}-${protonCachyosVersions.release}-${protonCachyosVersions.build}";
+  version = "${source.base}-${source.release}-${source.build}";
 
   src = fetchurl {
-    url = "https://mirror.cachyos.org/repo/x86_64_v3/cachyos-v3/proton-cachyos-1:${protonCachyosVersions.base}.${protonCachyosVersions.release}-${protonCachyosVersions.build}-x86_64_v3.pkg.tar.zst";
-    inherit (protonCachyosVersions) hash;
+    inherit (source) url hash;
   };
 
   nativeBuildInputs = [ zstd ];
