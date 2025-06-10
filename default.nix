@@ -19,6 +19,7 @@ stdenv.mkDerivation {
     tar -I zstd -xf $src
     mkdir -p $out/share/steam/compatibilitytools.d
     mv usr/share/steam/compatibilitytools.d/proton-cachyos $out/share/steam/compatibilitytools.d/
+    ln -s $out/share/steam/compatibilitytools.d/proton-cachyos/files/lib/wine/x86_64-unix/*.so $out/share/steam/compatibilitytools.d/proton-cachyos/files/lib/wine/
   '';
 
   meta = with lib; {
